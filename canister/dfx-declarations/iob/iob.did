@@ -1,0 +1,9 @@
+service: () -> {
+    addLog: (text, text, text, text, opt reserved) -> (variant {Ok:record {id:principal; action:text; data:opt reserved; hash:text; createdAt:nat64; uuid:text; serviceId:principal; userFingerprint:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}});
+    getAllLogs: () -> (variant {Ok:vec record {id:principal; action:text; data:opt reserved; hash:text; createdAt:nat64; uuid:text; serviceId:principal; userFingerprint:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}}) query;
+    getLogsByAction: (text) -> (variant {Ok:vec record {id:principal; action:text; data:opt reserved; hash:text; createdAt:nat64; uuid:text; serviceId:principal; userFingerprint:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}}) query;
+    getLogsByUserFingerprint: (text) -> (variant {Ok:vec record {id:principal; action:text; data:opt reserved; hash:text; createdAt:nat64; uuid:text; serviceId:principal; userFingerprint:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}}) query;
+    getLogsByUuid: (text) -> (variant {Ok:vec record {id:principal; action:text; data:opt reserved; hash:text; createdAt:nat64; uuid:text; serviceId:principal; userFingerprint:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}}) query;
+    initializeCanister: (principal) -> (variant {Ok:record {id:principal; createdAt:nat64}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}});
+    verifyLog: (text, text, text, text) -> (variant {Ok:record {valid:bool; hash:text}; Err:variant {NotFound:text; ValidationError:text; Unauthorized:text; InternalError:text; Conflict:text}});
+}
