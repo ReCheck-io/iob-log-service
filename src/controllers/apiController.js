@@ -26,7 +26,7 @@ async function register(req, res) {
     const validatedData = await validateLogData(req.body);
     const { uuid, action, data } = validatedData;
     
-    // Compute hash: uuid + action + userFingerprint (no objectName)
+    // Compute hash: uuid + action + userFingerprint
     const hash = computeHash(uuid, action, userFingerprint);
     
     // Register log in canister with new signature: (uuid, action, userFingerprint, hash, data)

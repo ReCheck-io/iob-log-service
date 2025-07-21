@@ -40,12 +40,11 @@ IoB Chain Logger provides tamper-proof audit logging for Internet of Buildings (
 
 Each log entry generates a keccak256 hash from:
 ```
-hash = keccak256(uuid + objectName + action + userFingerprint)
+hash = keccak256(uuid + action + userFingerprint)
 ```
 
 Where:
 - `uuid` - Unique identifier for the data object
-- `objectName` - Name/path of the object being logged
 - `action` - Operation performed (`create`, `update`, `delete`)
 - `userFingerprint` - SHA-256 fingerprint of user's mTLS certificate
 

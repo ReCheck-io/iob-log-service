@@ -180,49 +180,6 @@ For production deployment with automatic certificate management:
 
 For detailed nginx setup, see [`nginx/setup-nginx.md`](nginx/setup-nginx.md).
 
-## Testing
-
-### Development Testing
-
-```bash
-# Health check
-curl http://localhost:4000/health
-
-# Certificate info (requires mTLS setup)
-curl -k --cert certs/client.crt --key certs/client.key \
-     https://localhost:4000/cert-info
-```
-
-### Generate Test Certificates
-
-```bash
-# Generate development certificates
-npm run setup-certs
-```
-
-### API Testing
-
-```bash
-# Test registration (with mTLS)
-curl -k --cert certs/client.crt --key certs/client.key \
-     -X POST https://localhost:4000/api/register \
-     -H "Content-Type: application/json" \
-     -d '{
-       "uuid": "test-uuid-123",
-       "objectName": "test-document.pdf", 
-       "action": "create"
-     }'
-
-# Test verification
-curl -k --cert certs/client.crt --key certs/client.key \
-     -X POST https://localhost:4000/api/verify \
-     -H "Content-Type: application/json" \
-     -d '{
-       "uuid": "test-uuid-123",
-       "objectName": "test-document.pdf",
-       "action": "create"
-     }'
-```
 
 ## Environment Variables Reference
 
@@ -325,23 +282,6 @@ nvm use 20
    ```bash
    openssl x509 -in certs/client.crt -text -noout
    ```
-
-### Common Issues
-
-**Module type warnings:**
-- These are cosmetic warnings from dfx-declarations and don't affect functionality
-
-**Port already in use:**
-```bash
-# Find and kill process using port 4000
-lsof -ti:4000 | xargs kill -9
-```
-
-**Identity file permissions:**
-```bash
-# Secure identity file
-chmod 600 identity.secret
-```
 
 ## Project Structure
 
