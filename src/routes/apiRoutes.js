@@ -2,7 +2,7 @@ const express = require('express');
 const { 
   register, 
   verify, 
-  getLogsByDataId, 
+  getLogsByUuid, 
   getLogsByAction 
 } = require('../controllers/apiController');
 
@@ -13,7 +13,7 @@ router.post('/api/register', register);
 router.post('/api/verify', verify);
 
 // Log retrieval endpoints
-router.get('/api/logs/data/:dataId', getLogsByDataId);
+router.get('/api/logs/uuid/:uuid', getLogsByUuid);
 router.get('/api/logs/action/:action', getLogsByAction);
 
 module.exports = router; 

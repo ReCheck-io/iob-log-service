@@ -208,7 +208,7 @@ The canister supports flexible authentication:
 | `/cert-debug` | GET | Certificate debugging info |
 | `/api/register` | POST | Register new audit log |
 | `/api/verify` | POST | Verify existing log |
-| `/api/logs/data/:uuid` | GET | Get logs by UUID |
+| `/api/logs/uuid/:uuid` | GET | Get logs by UUID |
 | `/api/logs/action/:action` | GET | Get logs by action type |
 
 ## Troubleshooting

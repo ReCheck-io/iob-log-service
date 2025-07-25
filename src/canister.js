@@ -90,7 +90,7 @@ function getServicePrincipal() {
 /**
  * Register a new log entry in the canister
  * New signature: (uuid, action, userFingerprint, hash, data)
- * @param {string} uuid - Data object UUID
+* @param {string} uuid - UUID of the data object
  * @param {string} action - Action performed
  * @param {string} userFingerprint - User's certificate fingerprint
  * @param {string} hash - Pre-calculated hash
@@ -115,7 +115,7 @@ async function registerLog(uuid, action, userFingerprint, hash, data = null) {
  * Verify a log entry in the canister
  * New signature: (hash, uuid, action, userFingerprint)
  * @param {string} hash - Pre-calculated hash to search for
- * @param {string} uuid - Data object UUID
+ * @param {string} uuid - UUID of the data object
  * @param {string} action - Action performed
  * @param {string} userFingerprint - User's certificate fingerprint
  * @returns {Promise<object>} - Canister response with verification result
@@ -135,11 +135,11 @@ async function verifyLog(hash, uuid, action, userFingerprint) {
 }
 
 /**
- * Get logs by data UUID
- * @param {string} uuid - Data object UUID
+ * Get logs by UUID
+ * @param {string} uuid - UUID of the data object
  * @returns {Promise<object>} - Canister response with logs
  */
-async function getLogsByDataId(uuid) {
+async function getLogsByUuid(uuid) {
   try {
     const canisterActor = getActor();
     const result = await canisterActor.getLogsByUuid(uuid);
@@ -202,7 +202,7 @@ module.exports = {
   getServicePrincipal,
   registerLog,
   verifyLog,
-  getLogsByDataId,
+  getLogsByUuid,
   getLogsByAction,
   getLogsByUserFingerprint,
   getAllLogs

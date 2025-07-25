@@ -1,8 +1,8 @@
 const { 
   registerLog: canisterRegisterLog, 
   verifyLog: canisterVerifyLog, 
-  getLogsByDataId: getCanisterLogsByDataId,
-  getLogsByAction: getCanisterLogsByAction 
+  getLogsByUuid: getCanisterLogsByUuid,
+  getLogsByAction: getCanisterLogsByAction,
 } = require('../canister');
 const { 
   computeHash,
@@ -95,15 +95,15 @@ async function verify(req, res) {
 }
 
 /**
- * Get logs by data UUID
+ * Get logs by UUID
  */
-async function getLogsByDataId(req, res) {
+async function getLogsByUuid(req, res) {
   try {
     // Validate UUID parameter
     const uuid = await validateUuid(req.params.uuid);
     
     // Get logs from canister
-    const result = await getCanisterLogsByDataId(uuid);
+    const result = await getCanisterLogsByUuid(uuid);
     
     if (result.Err) {
       const errorMessage = Object.values(result.Err)[0];
@@ -155,6 +155,6 @@ async function getLogsByAction(req, res) {
 module.exports = {
   register,
   verify,
-  getLogsByDataId,
+  getLogsByUuid,
   getLogsByAction
 }; 
