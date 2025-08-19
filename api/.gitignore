@@ -173,7 +173,6 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
-.vscode
 
 # yarn v2
 .yarn/cache
@@ -216,15 +215,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-
-.github/
-**/node_modules/
-**/dist/
-**/coverage/
-**/.env
-**/.DS_Store
-**/*.log
-**/.azle
-**/.dfx
 

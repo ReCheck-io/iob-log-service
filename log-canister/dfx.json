@@ -1,0 +1,18 @@
+{
+  "canisters": {
+    "log": {
+      "type": "azle",
+      "main": "src/index.ts",
+      "candid": "src/index.did",
+      "wasm": ".azle/log/log.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "./dfx-declarations/log",
+        "node_compatibility": true
+      },
+      "custom": {
+        "experimental": true
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "canisters": {
+    "registry": {
+      "type": "azle",
+      "main": "src/index.ts",
+      "candid": "src/index.did",
+      "wasm": ".azle/registry/registry.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "./dfx-declarations/registry",
+        "node_compatibility": true
+      },
+      "custom": {
+        "experimental": true
+      }
+    }
+  }
+}

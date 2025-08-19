@@ -1,108 +1,147 @@
-# IoB Chain Logger
-
-A secure Node.js API with mTLS authentication for immutable audit logging on the Internet Computer Protocol (ICP).
-
-## What it does
-
-IoB Chain Logger provides tamper-proof audit logging for Internet of Buildings (IoB) protocol by:
-
-- **Capturing user actions** (create, update, delete) with mTLS client certificate authentication
-- **Computing cryptographic hashes** using keccak256 for data integrity
-- **Storing immutable logs** on ICP blockchain canisters written in Azle
-- **Providing query APIs** to retrieve logs by UUID, action type, user, or object
+# IoB Chain Logger & Tokenization
 
 ## Key Features
 
-- 🔐 **mTLS Authentication** - Client certificate-based user identification
-- 🔗 **ICP Integration** - Immutable storage on Internet Computer blockchain  
-- 🔒 **Cryptographic Integrity** - keccak256 hashing of all log components
-- 🚀 **Production Ready** - nginx + Certbot for automatic certificate management
-- 🛠️ **Development Friendly** - Direct TLS mode for local development and testing
-- 📋 **Flexible Queries** - Multiple log retrieval methods
-- 🛡️ **Secure by Design** - Service identity authorization and controller access
+- 🔗 **IoB Platform Integration** - Receives logs and fetches building data from main IoB platform
+- 🏗️ **Automated Tokenization** - Deploy ICRC2 tokens for buildings from IoB data
+- 🗄️ **Tokenized Building Registry** - Separate registry for blockchain-based building tokens
+- 🔐 **Dual mTLS Authentication** - Secure communication with IoB platform + service UI access
+- 🔗 **ICP Blockchain** - Immutable storage on Internet Computer Protocol
+- 🔒 **Cryptographic Integrity** - keccak256 hashing for all operations
+- 🚀 **Production Ready** - nginx + automatic certificate management
+- 📡 **Comprehensive APIs** - REST endpoints for tokenization and audit operations
+- 🖥️ **Management Interface** - Web UI for service administration (in development)specialized blockchain service for the Internet of Buildings (IoB) ecosystem that provides secure audit logging and building tokenization on the Internet Computer Protocol (ICP). This service works alongside the main IoB platform to offer immutable audit trails and ICRC2 token deployment for building assets.
 
-## Architecture
+> **⚠️ Important**: This is a separate service that integrates with the main IoB platform, not the main IoB platform itself. It handles blockchain operations and audit logging for building tokenization.
+
+## What it does
+
+This service provides blockchain capabilities for the IoB ecosystem:
+
+### 🔗 **IoB Platform Integration**
+- **Audit Log Receiver** - Receives building operation logs from the main IoB platform
+- **Building Data Fetching** - Uses mTLS to securely fetch original building data from IoB platform
+- **Tokenization Bridge** - Converts IoB building data into blockchain tokens
+
+### 🏢 **Building Tokenization**
+- **ICRC2 Deployment** - Automated ledger canister creation for tokenized buildings
+- **Registry Management** - Maintains registry of tokenized buildings
+- **Token Operations** - Minting, transfers, and balance management on ICP
+
+### 📝 **Immutable Audit Logging**
+- **Chain Storage** - All building operations logged immutably on ICP canisters
+- **Cryptographic Integrity** - keccak256 hashing for tamper-proof verification
+- **Cross-Platform Logging** - Receives and stores logs from main IoB platform operations
+
+### 🔐 **Dual Authentication Architecture**
+- **mTLS for IoB Integration** - Secure communication with main IoB platform
+- **mTLS for Service UI** - Client certificate authentication for this service's web interface
+- **ICP Identity** - Blockchain identity management for on-chain operations
+
+### 🌐 **Full-Stack Platform**
+- **REST API** - Comprehensive backend services
+- **Web Interface** - Modern UI for building and token management (planned)
+- **Production Ready** - Enterprise-grade deployment with nginx
+
+## Architecturee
+
+- **REST API** - Blockchain operations and audit logging endpoints
+- **Web Interface** - Management UI for tokenized buildings and logs (with mTLS auth)
+- **IoB Integration** - Secure communication with main IoB platform
+
+## Project Structure
 
 ```
-[Client Certificate] → [nginx + mTLS] → [Node.js API] → [ICP Canister]
-                                            ↓
-                                   [keccak256 Hash] → [Immutable Log]
+iob-chain-logger/
+├── api/                    # Node.js REST API server
+│   ├── src/
+│   │   ├── controllers/    # API route handlers
+│   │   ├── routes/         # Express route definitions
+│   │   ├── middleware/     # Authentication & validation
+│   │   ├── canister/       # ICP canister clients
+│   │   ├── deployer/       # ICRC2 ledger deployment
+│   │   └── server.js       # Main application entry
+│   ├── certs/              # mTLS certificates
+│   └── package.json        # API dependencies
+├── ui/                     # Web interface (TODO:)
+│   └── .gitkeep            # Future: Next.js + TailwindCSS
+├── log-canister/           # Audit logging canister (Azle)
+│   ├── src/                # TypeScript canister code
+│   └── dfx-declarations/   # Generated bindings
+├── registry-canister/      # Building registry canister (Azle)
+│   ├── src/                # TypeScript canister code
+│   └── dfx-declarations/   # Generated bindings
+├── ledger-canister/        # ICRC2 token templates
+│   ├── ledger.wasm.gz      # Compiled ledger canister
+│   └── ledger.did          # Candid interface
+├── docs/                   # Documentation
+│   ├── SETUP.md           # Deployment & configuration
+│   ├── DEVELOPMENT.md     # Development guide
+│   └── SETUP-NGINX.md     # Production nginx setup
+└── scripts/                # Utility scripts
+    └── generate-test-certs.sh
 ```
 
 ## API Endpoints
 
-- `POST /api/register` - Register a new audit log entry
-- `POST /api/verify` - Verify an existing log entry
-- `GET /api/logs/uuid/:uuid` - Get logs by data UUID  
+### Building Tokenization (from IoB Data)
+- `POST /api/buildings` - Tokenize a building from main IoB platform data
+- `GET /api/buildings` - List all tokenized buildings in this service
+- `GET /api/buildings/:uuid` - Get tokenized building details
+- `GET /api/buildings/user/:principal` - Get tokenized buildings by owner
+
+### Token Operations
+- `POST /api/buildings/:uuid/mint` - Mint additional tokens for a building
+- `POST /api/buildings/:uuid/transfer` - Transfer building tokens
+- `GET /api/buildings/:uuid/balance` - Get token balance for a building
+
+### Audit Logging (from IoB Platform)
+- `POST /api/logs` - Register audit log from main IoB platform
+- `POST /api/logs/verify` - Verify an existing log entry
+- `GET /api/logs/uuid/:uuid` - Get logs by UUID
 - `GET /api/logs/action/:action` - Get logs by action type
-- `GET /health` - Health check endpoint
+
+### System & Integration
+- `GET /api/system/health` - Service health check
+- `GET /api/certificates/info` - mTLS certificate information
+- `GET /api/certificates/debug` - Debug certificate information
+- `GET /api-docs` - Interactive API documentation
+
+> **Note**: This service maintains its own registry of **tokenized buildings** only. Original building data remains in the main IoB platform and is fetched via secure mTLS when needed for tokenization.
 
 ## Hash Composition
 
 Each log entry generates a keccak256 hash from:
+
 ```
 hash = keccak256(uuid + action + userFingerprint)
 ```
 
-Where:
-- `uuid` - Unique identifier for the data object
-- `action` - Operation performed (`create`, `update`, `delete`)
-- `userFingerprint` - SHA-256 fingerprint of user's mTLS certificate
-
-## Quick Start
-
-### Development Mode (Local Testing)
-```bash
-# Install dependencies
-npm install
-
-# Generate test certificates for development
-./scripts/generate-test-certs.sh
-
-# Configure for direct TLS mode
-cp .env.example .env
-# Set CERT_MODE=direct in .env
-
-# Start development server with HTTPS
-npm run dev
-
-# Test with client certificate
-curl -k --cert certs/client.crt --key certs/client.key https://localhost:4000/cert-info
-```
-
-### Production Mode (nginx Proxy)
-```bash
-# Install dependencies
-npm install
-
-# Start Node.js service (displays service principal)
-npm run dev
-
-# Deploy ICP canister with service authorization
-dfx deploy --argument "(opt principal \"YOUR_SERVICE_PRINCIPAL\")"
-
-# Configure environment and restart
-cp .env.example .env
-# Edit .env with your CANISTER_ID_IOB and CERT_MODE=nginx
-npm start
-```
-
 ## Documentation
 
-- **[Setup Guide](SETUP.md)** - Complete installation and deployment instructions
-- **[Development Guide](DEVELOPMENT.md)** - Certificate modes, local development, and testing
-- **[API Documentation](API.md)** - Complete REST API reference with endpoints, authentication, examples, and response formats
-- **[nginx Configuration](nginx/setup-nginx.md)** - Production deployment with mTLS
+- **[Complete Setup Guide](docs/SETUP-COMPLETE.md)** - Unified installation, development, and deployment guide
+- **[API Documentation](docs/API.md)** - Complete REST API reference with endpoints and examples
+- **[nginx Configuration](docs/SETUP-NGINX.md)** - Production deployment with mTLS support
 
-## Tech Stack
+## Technology Stack
 
-- **Backend**: Node.js + Express.js
-- **Blockchain**: Internet Computer Protocol (ICP)
-- **Canister Framework**: Azle (TypeScript/JavaScript for ICP)
-- **Authentication**: mTLS with X.509 client certificates
-- **Cryptography**: keccak256 hashing
-- **Validation**: yup schema validation
-- **Production**: nginx + Certbot for certificate management
+### Backend
+- **Node.js + Express** - REST API server
+- **Internet Computer Protocol (ICP)** - Blockchain storage
+- **Azle (TypeScript)** - Canister development framework
+- **mTLS Authentication** - Client certificate security
+- **ICRC2 Standard** - Fungible token specification
+
+### Development
+- **ESLint + Prettier** - Code quality & formatting
+- **Swagger/OpenAPI** - API documentation
+- **Docker** - Containerization support
+- **Nginx** - Production reverse proxy
+
+### Future UI Stack
+- **Next.js + TypeScript** - React framework
+- **TailwindCSS + shadcn/ui** - Component library
+- **Dual Authentication** - mTLS + ICP Identity
 
 ## License
 
